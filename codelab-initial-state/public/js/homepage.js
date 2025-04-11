@@ -28,6 +28,15 @@ export async function onDocumentReady(firebaseApp) {
   const auth = firebaseApp.auth();
   const db = firebaseApp.firestore();
 
+
+   // ADD THESE LINES
+   if (location.hostname === "127.0.0.1") {
+    console.log("127.0.0.1 detected!");
+    auth.useEmulator("http://127.0.0.1:9099");
+    db.useEmulator("127.0.0.1", 8080);
+  }
+
+
   const homePage = new HomePage(db, auth);
   mount(document.body, homePage);
 }
@@ -170,6 +179,12 @@ class HomePage {
   }
 
   addToCart(id, itemData) {
+
+    if (this.auth.currentUser === null) {
+      this.showError("You must be signed in!");
+      return;
+    }
+    
     console.log("addToCart", id, JSON.stringify(itemData));
     return this.db
       .collection("carts")
@@ -192,4 +207,6 @@ class HomePage {
   showError(e) {
     alert(e);
   }
+
+  
 }

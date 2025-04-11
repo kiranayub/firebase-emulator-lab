@@ -1,45 +1,31 @@
-// Copyright 2019 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     https://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore"; // Firestore import
+import { getAnalytics } from "firebase/analytics"; // Analytics import
 
+// Firebase configuration (use your own Firebase config here)
+const firebaseConfig = {
+  apiKey: "AIzaSyD27PtgjK-QWfHpQ_GaWYjjO4iWhligZLk",
+  authDomain: "kiranayubfirebaseproject.firebaseapp.com",
+  projectId: "kiranayubfirebaseproject",
+  storageBucket: "kiranayubfirebaseproject.firebasestorage.app",
+  messagingSenderId: "975844365453",
+  appId: "1:975844365453:web:f3de2546d6e3e4f3193ec4",
+  measurementId: "G-9R9B5LMCGB"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const db = getFirestore(app); // Initialize Firestore
+
+// Define constants for data generation
 const NAMES = [
-  "Computer",
-  "Backpack",
-  "Wallet",
-  "Dog Toy",
-  "Coffee Cup",
-  "Fountain Pen",
-  "Phone Case",
-  "Shoes",
-  "Mystery Box",
-  "Gadget",
-  "Multi-tool"
+  "Computer", "Backpack", "Wallet", "Dog Toy", "Coffee Cup", "Fountain Pen", "Phone Case", "Shoes", "Mystery Box", "Gadget", "Multi-tool"
 ];
 
 const ADJECTIVES = [
-  "Sleek",
-  "Durable",
-  "Hip",
-  "Futuristic",
-  "Revolutionary",
-  "All-New",
-  "Handmade",
-  "Hipster",
-  "Practical",
-  "Refined",
-  "Rustic",
-  "Ergonomic",
-  "Intelligent"
+  "Sleek", "Durable", "Hip", "Futuristic", "Revolutionary", "All-New", "Handmade", "Hipster", "Practical", "Refined", "Rustic", "Ergonomic", "Intelligent"
 ];
 
 const DESCRIPTIONS = [
@@ -54,30 +40,18 @@ const DESCRIPTIONS = [
 ];
 
 const PRICES = [
-  "0.99",
-  "4.99",
-  "9.99",
-  "12.99",
-  "14.99",
-  "19.99",
-  "26.99",
-  "29.99",
-  "99.99"
+  "0.99", "4.99", "9.99", "12.99", "14.99", "19.99", "26.99", "29.99", "99.99"
 ];
 
 const IMG_SIZES = ["640", "600", "480", "800", "640", "700", "720"];
-
 const IMG_CATEGORIES = ["arch", "tech", "nature"];
 
-/**
- * This function can be used to create random items in the database,
- * although it should not be necessary because the codelab includes
- * a Firestore export for seed data.
- */
-export async function createItems(db) {
+// Function to create random items in Firestore
+export async function createItems() {
   console.log("createItems()");
 
-  const batch = db.batch();
+  const batch = db.batch(); // Create a batch for Firestore write operations
+
   for (let i = 0; i < 9; i++) {
     const data = {
       name: _getProductName(),
@@ -86,13 +60,16 @@ export async function createItems(db) {
       imageUrl: _getProductImageUrl()
     };
 
+    // Add data to Firestore collection "items"
     const ref = db.collection("items").doc();
     batch.set(ref, data);
   }
 
+  // Commit the batch operation
   await batch.commit();
 }
 
+// Helper functions to generate random data
 function _getProductName() {
   return _randomElement(ADJECTIVES) + " " + _randomElement(NAMES);
 }
@@ -116,6 +93,7 @@ function _getProductImageUrl() {
   );
 }
 
+// Function to get a random element from an array
 function _randomElement(arr) {
   const ind = Math.floor(Math.random() * arr.length);
   return arr[ind];

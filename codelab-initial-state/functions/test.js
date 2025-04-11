@@ -83,6 +83,43 @@ describe("shopping carts", () => {
     await resetData(admin, TEST_FIREBASE_PROJECT_ID);
   });
 
+  // it('can be created and updated by the cart owner', async () => {
+  //   // Alice can create her own cart
+  //   await firebase.assertSucceeds(aliceDb.doc("carts/alicesCart").set({
+  //     ownerUID: "alice",
+  //     total: 0
+  //   }));
+
+  //   // Bob can't create Alice's cart
+  //   await firebase.assertFails(bobDb.doc("carts/alicesCart").set({
+  //     ownerUID: "alice",
+  //     total: 0
+  //   }));
+
+  //   // Alice can update her own cart with a new total
+  //   await firebase.assertSucceeds(aliceDb.doc("carts/alicesCart").update({
+  //     total: 1
+  //   }));
+
+  //   // Bob can't update Alice's cart with a new total
+  //   await firebase.assertFails(bobDb.doc("carts/alicesCart").update({
+  //     total: 1
+  //   }));
+  // });
+
+  // it("can be read only by the cart owner", async () => {
+  //   // Setup: Create Alice's cart as admin
+  //   await admin.doc("carts/alicesCart").set({
+  //     ownerUID: "alice",
+  //     total: 0
+  //   });
+
+  //   // Alice can read her own cart
+  //   await firebase.assertSucceeds(aliceDb.doc("carts/alicesCart").get());
+
+  //   // Bob can't read Alice's cart
+  //   await firebase.assertFails(bobDb.doc("carts/alicesCart").get());
+  // });
   it('can be created and updated by the cart owner', async () => {
     // Alice can create her own cart
     await firebase.assertSucceeds(aliceDb.doc("carts/alicesCart").set({
@@ -120,6 +157,32 @@ describe("shopping carts", () => {
     // Bob can't read Alice's cart
     await firebase.assertFails(bobDb.doc("carts/alicesCart").get());
   });
+
+
+
+  it("can be read only by the cart owner", async () => {
+    // Alice can read items in her own cart
+    await firebase.assertSucceeds(aliceDb.doc("carts/alicesCart/items/milk").get());
+
+    // Bob can't read items in alice's cart
+    await firebase.assertFails(bobDb.doc("carts/alicesCart/items/milk").get())
+  });
+
+  it("can be added only by the cart owner",  async () => {
+    // Alice can add an item to her own cart
+    await firebase.assertSucceeds(aliceDb.doc("carts/alicesCart/items/lemon").set({
+      name: "lemon",
+      price: 0.99
+    }));
+
+    // Bob can't add an item to alice's cart
+    await firebase.assertFails(bobDb.doc("carts/alicesCart/items/lemon").set({
+      name: "lemon",
+      price: 0.99
+    }));
+  });
+
+
 });
 
 describe("shopping cart items", async () => {
@@ -179,7 +242,7 @@ describe("shopping cart items", async () => {
   });
 });
 
-describe.skip("adding an item to the cart recalculates the cart total. ", () => {
+describe("adding an item to the cart recalculates the cart total. ", () => {
   const admin = firebase.initializeAdminApp({ 
     projectId: REAL_FIREBASE_PROJECT_ID 
   }).firestore();
@@ -189,7 +252,7 @@ describe.skip("adding an item to the cart recalculates the cart total. ", () => 
   });
 
   it("should sum the cost of their items", async () => {
-    if (REAL_FIREBASE_PROJECT_ID === "changeme") {
+    if (REAL_FIREBASE_PROJECT_ID === "kiranayubproject") {
       throw new Error("Please change the REAL_FIREBASE_PROJECT_ID at the top of the test file");
     }
 
