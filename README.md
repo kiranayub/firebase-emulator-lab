@@ -12,6 +12,9 @@ There are two folders in this repository:
 *  `codelab-initial-state` - the starting code for the codelab, which you will complete.
 *  `codelab-final-state` - the final code of the codelab, which you can use as a reference if you get stuck or want to skip ahead to the end result.
 
+Video link:
+
+https://drive.google.com/drive/folders/1yG13HYQPtxdWoUtCsNBRA6-RGwE7xzui?usp=drive_link
 
 ## How to make contributions
 Please read and follow the steps in the [CONTRIBUTING.md](CONTRIBUTING.md)
@@ -22,3 +25,4 @@ See [LICENSE](LICENSE)
 
 [codelab]: https://firebase.google.com/codelabs/firebase-emulator
 [pathway]: https://firebase.google.com/learn/pathways/firebase-emulators
+
